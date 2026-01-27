@@ -1,0 +1,48 @@
+# Miscellaneous
+*.class
+*.log
+*.lock
+*.dist
+*.tmp
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Visual Studio Code
+.vscode/
+
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Android
+android/local.properties
+android/.gradle
+android/captures/
+android/gradlew
+android/gradlew.bat
+
+# iOS
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Podfile.lock
+ios/Pods/
+ios/.symlinks/
+
+# .NET / ASP.NET Core
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userprefs
+*.launchSettings.json
