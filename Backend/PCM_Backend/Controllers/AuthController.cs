@@ -89,6 +89,20 @@ namespace PCM_Backend.Controllers
                 await _userManager.AddToRoleAsync(user, "Admin");
             }
 
+            // Create Member record if not exists
+            var existingMember = _context.Members.FirstOrDefault(m => m.UserId == user.Id);
+            if (existingMember == null)
+            {
+                var member = new Member
+                {
+                    UserId = user.Id,
+                    FullName = "Administrator",
+                    WalletBalance = 9999999
+                };
+                _context.Members.Add(member);
+                await _context.SaveChangesAsync();
+            }
+
             return Ok("Admin user created/verified: admin / Password123!");
         }
 
@@ -99,7 +113,7 @@ namespace PCM_Backend.Controllers
             if (userId == null) return Unauthorized();
 
             var member = _context.Members.FirstOrDefault(m => m.UserId == userId);
-            
+
             var user = await _userManager.FindByIdAsync(userId);
             var roles = await _userManager.GetRolesAsync(user!);
 

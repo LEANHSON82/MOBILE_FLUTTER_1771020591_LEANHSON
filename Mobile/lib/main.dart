@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'services/signalr_service.dart';
+import 'services/api_service.dart';
 import 'screens/login_screen.dart';
 import 'screens/main_layout.dart';
 import 'screens/booking_screen.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()..checkAuth()),
         ChangeNotifierProvider(create: (_) => SignalRService()),
+        Provider(create: (_) => ApiService()),
       ],
       child: MaterialApp(
         title: 'PCM - Vợt Thủ Phố Núi',

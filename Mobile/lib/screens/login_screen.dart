@@ -16,18 +16,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _login() async {
     setState(() => _isLoading = true);
-    final success = await context.read<AuthProvider>().login(
-      _usernameController.text,
-      _passwordController.text,
-    );
-    setState(() => _isLoading = false);
+    try {
+      final success = await context.read<AuthProvider>().login(
+        _usernameController.text,
+        _passwordController.text,
+      );
+      setState(() => _isLoading = false);
 
-    if (success && mounted) {
-      Navigator.pushReplacementNamed(context, '/dashboard');
-    } else if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Login failed')));
+      if (success && mounted) {
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } else if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Login failed')));
+      }
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Login error: $e')));
+      }
     }
   }
 

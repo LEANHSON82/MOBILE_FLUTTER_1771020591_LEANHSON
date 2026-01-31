@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 import '../services/api_service.dart';
 import 'tournament_bracket_screen.dart';
+import 'chat_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 
@@ -350,8 +351,24 @@ class _TournamentScreenState extends State<TournamentScreen> with SingleTickerPr
                         ),
                       ),
                       icon: const Icon(Icons.account_tree),
-                      label: const Text('Xem Bracket'),
+                      label: const Text('Bracket'),
                     ),
+                  ),
+                  const SizedBox(width: 8),
+                  // Chat Button
+                  IconButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => TournamentChatScreen(
+                          tournamentId: tournament['id'],
+                          tournamentName: tournament['name'] ?? 'Tournament',
+                        ),
+                      ),
+                    ),
+                    icon: const Icon(Icons.chat_bubble_outline),
+                    tooltip: 'Chat giải đấu',
+                    color: Colors.blue,
                   ),
                   if (isOpen) ...[
                     const SizedBox(width: 8),

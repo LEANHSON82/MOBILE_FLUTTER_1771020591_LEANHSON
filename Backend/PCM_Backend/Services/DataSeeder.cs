@@ -69,7 +69,7 @@ namespace PCM_Backend.Services
                             AvatarUrl = $"https://api.dicebear.com/7.x/avataaars/png?seed={username}" // Mock avatar
                         };
                         context.Members.Add(member);
-                        
+
                         // Seed initial transaction for deposit
                         context.WalletTransactions.Add(new WalletTransaction
                         {
@@ -114,8 +114,8 @@ namespace PCM_Backend.Services
                     PrizePool = 5000000,
                     Status = TournamentStatus.Finished
                 };
-                
-                 var t2 = new Tournament
+
+                var t2 = new Tournament
                 {
                     Name = "Winter Cup 2025",
                     StartDate = DateTime.UtcNow.AddDays(-10),
@@ -126,7 +126,7 @@ namespace PCM_Backend.Services
                     Status = TournamentStatus.Ongoing
                 };
 
-                 var t3 = new Tournament
+                var t3 = new Tournament
                 {
                     Name = "Spring Championship 2026",
                     StartDate = DateTime.UtcNow.AddMonths(2),
@@ -137,7 +137,7 @@ namespace PCM_Backend.Services
                     Status = TournamentStatus.Open
                 };
 
-                 var t4 = new Tournament
+                var t4 = new Tournament
                 {
                     Name = "Weekend Friendly",
                     StartDate = DateTime.UtcNow.AddDays(5),
@@ -157,39 +157,82 @@ namespace PCM_Backend.Services
                 if (members.Count >= 8)
                 {
                     // Create participants
-                    foreach(var m in members) {
+                    foreach (var m in members)
+                    {
                         context.TournamentParticipants.Add(new TournamentParticipant { TournamentId = t1.Id, MemberId = m.Id, PaymentStatus = true, TeamName = m.FullName });
                     }
                     await context.SaveChangesAsync();
 
                     // Quarter Finals
                     // Simplified: just add some matches
-                    context.Matches.Add(new Match { TournamentId = t1.Id, RoundName = "Quarter Final 1", Date = t1.StartDate.AddDays(1), StartTime = new TimeSpan(8,0,0), 
-                        Team1_Player1Id = members[0].Id, Team2_Player1Id = members[1].Id, 
-                        Score1 = 2, Score2 = 0, WinningSide = MatchWinningSide.Team1, Details = "11-5, 11-8", Status = MatchStatus.Finished });
-                    
-                    context.Matches.Add(new Match { TournamentId = t1.Id, RoundName = "Quarter Final 2", Date = t1.StartDate.AddDays(1), StartTime = new TimeSpan(9,0,0), 
-                        Team1_Player1Id = members[2].Id, Team2_Player1Id = members[3].Id, 
-                        Score1 = 1, Score2 = 2, WinningSide = MatchWinningSide.Team2, Details = "11-9, 5-11, 10-12", Status = MatchStatus.Finished });
+                    context.Matches.Add(new Match
+                    {
+                        TournamentId = t1.Id,
+                        RoundName = "Quarter Final 1",
+                        Date = t1.StartDate.AddDays(1),
+                        StartTime = new TimeSpan(8, 0, 0),
+                        Team1_Player1Id = members[0].Id,
+                        Team2_Player1Id = members[1].Id,
+                        Score1 = 2,
+                        Score2 = 0,
+                        WinningSide = MatchWinningSide.Team1,
+                        Details = "11-5, 11-8",
+                        Status = MatchStatus.Finished
+                    });
+
+                    context.Matches.Add(new Match
+                    {
+                        TournamentId = t1.Id,
+                        RoundName = "Quarter Final 2",
+                        Date = t1.StartDate.AddDays(1),
+                        StartTime = new TimeSpan(9, 0, 0),
+                        Team1_Player1Id = members[2].Id,
+                        Team2_Player1Id = members[3].Id,
+                        Score1 = 1,
+                        Score2 = 2,
+                        WinningSide = MatchWinningSide.Team2,
+                        Details = "11-9, 5-11, 10-12",
+                        Status = MatchStatus.Finished
+                    });
                 }
-                
+
                 // Seed Matches for Ongoing Tournament (Winter Cup)
-                 var members2 = await context.Members.Skip(8).Take(4).ToListAsync();
-                 if (members2.Count >= 4)
-                 {
-                     foreach(var m in members2) {
+                var members2 = await context.Members.Skip(8).Take(4).ToListAsync();
+                if (members2.Count >= 4)
+                {
+                    foreach (var m in members2)
+                    {
                         context.TournamentParticipants.Add(new TournamentParticipant { TournamentId = t2.Id, MemberId = m.Id, PaymentStatus = true, TeamName = m.FullName });
                     }
                     await context.SaveChangesAsync();
 
-                     context.Matches.Add(new Match { TournamentId = t2.Id, RoundName = "Group A - Match 1", Date = DateTime.UtcNow.AddDays(-1), StartTime = new TimeSpan(18,0,0), 
-                        Team1_Player1Id = members2[0].Id, Team2_Player1Id = members2[1].Id, 
-                        Score1 = 2, Score2 = 1, WinningSide = MatchWinningSide.Team1, Details = "11-2, 8-11, 11-9", Status = MatchStatus.Finished });
+                    context.Matches.Add(new Match
+                    {
+                        TournamentId = t2.Id,
+                        RoundName = "Group A - Match 1",
+                        Date = DateTime.UtcNow.AddDays(-1),
+                        StartTime = new TimeSpan(18, 0, 0),
+                        Team1_Player1Id = members2[0].Id,
+                        Team2_Player1Id = members2[1].Id,
+                        Score1 = 2,
+                        Score2 = 1,
+                        WinningSide = MatchWinningSide.Team1,
+                        Details = "11-2, 8-11, 11-9",
+                        Status = MatchStatus.Finished
+                    });
 
-                     context.Matches.Add(new Match { TournamentId = t2.Id, RoundName = "Group A - Match 2", Date = DateTime.UtcNow.Date, StartTime = new TimeSpan(19,0,0), 
-                        Team1_Player1Id = members2[2].Id, Team2_Player1Id = members2[3].Id, Status = MatchStatus.Scheduled });
-                 }
-                 await context.SaveChangesAsync();
+                    context.Matches.Add(new Match
+                    {
+                        TournamentId = t2.Id,
+                        RoundName = "Group A - Match 2",
+                        Date = DateTime.UtcNow.Date,
+                        StartTime = new TimeSpan(19, 0, 0),
+                        Team1_Player1Id = members2[2].Id,
+                        Team2_Player1Id = members2[3].Id,
+                        Status = MatchStatus.Scheduled
+                    });
+                }
+                await context.SaveChangesAsync();
             }
 
             // 6. News
@@ -204,67 +247,67 @@ namespace PCM_Backend.Services
                 );
                 await context.SaveChangesAsync();
             }
-            
+
             // 7. Bookings (Random bookings for next 7 days)
             if (context.Bookings.Count() < 5)
             {
-                 var members = await context.Members.Take(5).ToListAsync();
-                 var courts = await context.Courts.Take(3).ToListAsync();
-                 var random = new Random();
-                 
-                 foreach(var court in courts)
-                 {
-                     for(int d = 0; d < 7; d++)
-                     {
-                         // Random 1-2 bookings per day per court
-                         if (random.Next(0, 2) == 1)
-                         {
-                             var hour = random.Next(7, 20);
-                             var booking = new Booking
-                             {
-                                 CourtId = court.Id,
-                                 MemberId = members[random.Next(members.Count)].Id,
-                                 StartTime = DateTime.UtcNow.Date.AddDays(d).AddHours(hour),
-                                 EndTime = DateTime.UtcNow.Date.AddDays(d).AddHours(hour + 1),
-                                 TotalPrice = court.PricePerHour,
-                                 Status = BookingStatus.Confirmed,
-                                 IsRecurring = false
-                             };
-                             context.Bookings.Add(booking);
-                             
-                             // Add Transaction for Booking
-                             context.WalletTransactions.Add(new WalletTransaction
-                             {
-                                 MemberId = booking.MemberId,
-                                 Amount = -booking.TotalPrice,
-                                 Type = TransactionType.Payment,
-                                 Status = TransactionStatus.Completed,
-                                 Description = $"Booking {court.Name} - {booking.StartTime:dd/MM HH:mm}",
-                                 CreatedDate = DateTime.UtcNow
-                             });
-                         }
-                     }
-                 }
-                 await context.SaveChangesAsync();
+                var members = await context.Members.Take(5).ToListAsync();
+                var courts = await context.Courts.Take(3).ToListAsync();
+                var random = new Random();
+
+                foreach (var court in courts)
+                {
+                    for (int d = 0; d < 7; d++)
+                    {
+                        // Random 1-2 bookings per day per court
+                        if (random.Next(0, 2) == 1)
+                        {
+                            var hour = random.Next(7, 20);
+                            var booking = new Booking
+                            {
+                                CourtId = court.Id,
+                                MemberId = members[random.Next(members.Count)].Id,
+                                StartTime = DateTime.UtcNow.Date.AddDays(d).AddHours(hour),
+                                EndTime = DateTime.UtcNow.Date.AddDays(d).AddHours(hour + 1),
+                                TotalPrice = court.PricePerHour,
+                                Status = BookingStatus.Confirmed,
+                                IsRecurring = false
+                            };
+                            context.Bookings.Add(booking);
+
+                            // Add Transaction for Booking
+                            context.WalletTransactions.Add(new WalletTransaction
+                            {
+                                MemberId = booking.MemberId,
+                                Amount = -booking.TotalPrice,
+                                Type = TransactionType.Payment,
+                                Status = TransactionStatus.Completed,
+                                Description = $"Booking {court.Name} - {booking.StartTime:dd/MM HH:mm}",
+                                CreatedDate = DateTime.UtcNow
+                            });
+                        }
+                    }
+                }
+                await context.SaveChangesAsync();
             }
 
             // 8. Pending Transaction (For testing Admin Wallet)
             if (!context.WalletTransactions.Any(t => t.Status == TransactionStatus.Pending))
             {
-                 var member = await context.Members.FirstOrDefaultAsync();
-                 if (member != null)
-                 {
-                     context.WalletTransactions.Add(new WalletTransaction
-                     {
-                         MemberId = member.Id,
-                         Amount = 500000,
-                         Type = TransactionType.Deposit,
-                         Status = TransactionStatus.Pending,
-                         Description = "Nạp tiền chờ duyệt (Test)",
-                         CreatedDate = DateTime.UtcNow
-                     });
-                     await context.SaveChangesAsync();
-                 }
+                var member = await context.Members.FirstOrDefaultAsync();
+                if (member != null)
+                {
+                    context.WalletTransactions.Add(new WalletTransaction
+                    {
+                        MemberId = member.Id,
+                        Amount = 500000,
+                        Type = TransactionType.Deposit,
+                        Status = TransactionStatus.Pending,
+                        Description = "Nạp tiền chờ duyệt (Test)",
+                        CreatedDate = DateTime.UtcNow
+                    });
+                    await context.SaveChangesAsync();
+                }
             }
         }
 

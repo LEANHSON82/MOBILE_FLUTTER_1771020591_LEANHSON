@@ -196,5 +196,57 @@ namespace PCM_Backend.Models
     }
 
     public enum CategoryType { Income, Expense }
+
+    // 591_Duels (Kèo Thách đấu)
+    public class Duel
+    {
+        [Key]
+        public int Id { get; set; }
+
+        // Người tạo kèo
+        public int ChallengerId { get; set; }
+        [ForeignKey("ChallengerId")]
+        public virtual Member? Challenger { get; set; }
+
+        public int? ChallengerPartnerId { get; set; } // Partner (nếu 2vs2)
+
+        // Đối thủ
+        public int? OpponentId { get; set; }
+        public int? OpponentPartnerId { get; set; } // Partner đối thủ (nếu 2vs2)
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal BetAmount { get; set; } // Tiền cược
+
+        public DuelType Type { get; set; } // 1vs1 hoặc 2vs2
+        public DuelStatus Status { get; set; }
+
+        public DateTime? ScheduledTime { get; set; } // Thời gian dự kiến
+        public int? WinningSide { get; set; } // 1 = Challenger, 2 = Opponent
+        public string? Result { get; set; } // Chi tiết kết quả
+        public string? Message { get; set; } // Lời nhắn thách đấu
+
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+    }
+
+    public enum DuelType { OneVsOne, TwoVsTwo }
+    public enum DuelStatus { Open, Accepted, InProgress, Finished, Cancelled }
+
+    // 591_ChatMessages (Lưu tin nhắn chat)
+    public class ChatMessage
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public int? TournamentId { get; set; } // Chat trong giải đấu
+        public int? DuelId { get; set; } // Chat trong kèo thách đấu
+
+        public int SenderId { get; set; }
+        [ForeignKey("SenderId")]
+        public virtual Member? Sender { get; set; }
+
+        public string SenderName { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+    }
 }
 

@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'admin_wallet_screen.dart';
 import 'tournament_screen.dart';
 import 'members_screen.dart';
+import 'reports_screen.dart';
 
 class AdminDashboardScreen extends StatelessWidget {
   const AdminDashboardScreen({super.key});
@@ -227,6 +228,18 @@ class AdminDashboardScreen extends StatelessWidget {
                MaterialPageRoute(builder: (_) => const MembersScreen()),
              );
           },
+        ),
+        const SizedBox(height: 12),
+        _buildMenuItem(
+          context,
+          title: 'Xuất báo cáo',
+          subtitle: 'Doanh thu, thành viên, đặt sân',
+          icon: Icons.file_download,
+          color: Colors.deepOrange,
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const ReportsScreen()),
+          ),
         ),
       ],
     );

@@ -16,6 +16,8 @@ namespace PCM_Backend.Data
         public DbSet<Match> Matches { get; set; } = null!;
         public DbSet<Notification> Notifications { get; set; } = null!;
         public DbSet<TransactionCategory> TransactionCategories { get; set; } = null!;
+        public DbSet<Duel> Duels { get; set; } = null!;
+        public DbSet<ChatMessage> ChatMessages { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,6 +34,8 @@ namespace PCM_Backend.Data
             builder.Entity<Match>().ToTable("591_Matches");
             builder.Entity<Notification>().ToTable("591_Notifications");
             builder.Entity<TransactionCategory>().ToTable("591_TransactionCategories");
+            builder.Entity<Duel>().ToTable("591_Duels");
+            builder.Entity<ChatMessage>().ToTable("591_ChatMessages");
         }
     }
 }

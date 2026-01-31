@@ -46,3 +46,8 @@ obj/
 *.suo
 *.userprefs
 *.launchSettings.json
+publish/
+publish-linux/
+*.service
+upload_script.txt
+deploy_helper.bat

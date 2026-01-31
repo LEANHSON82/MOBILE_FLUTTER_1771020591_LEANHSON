@@ -10,13 +10,20 @@ class ApiService {
 
   ApiService() {
     String baseUrl;
-    if (kIsWeb) {
-      baseUrl = 'http://localhost:5220/api/'; // Web (HTTP)
-    } else if (Platform.isAndroid) {
-      baseUrl = 'http://10.0.2.2:5220/api/'; // Android Emulator (HTTP)
-    } else {
-      baseUrl = 'http://127.0.0.1:5220/api/'; // iOS/Desktop (HTTP) - use IP instead of localhost
-    }
+    // Production/VPS URL
+    const String productionUrl = 'http://103.56.160.199:5296/api/';
+    
+    // Uncomment these lines to use Localhost for Development if needed
+    // if (kIsWeb) {
+    //   baseUrl = 'http://localhost:5220/api/'; 
+    // } else if (Platform.isAndroid) {
+    //   baseUrl = 'http://10.0.2.2:5220/api/';
+    // } else {
+    //   baseUrl = 'http://127.0.0.1:5220/api/';
+    // }
+
+    // Use VPS by default for now to test deployment
+    baseUrl = productionUrl;
 
     _dio = Dio(
       BaseOptions(

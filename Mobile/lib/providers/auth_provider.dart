@@ -56,7 +56,7 @@ class AuthProvider with ChangeNotifier {
     } catch (e, stackTrace) {
       print('Login error: $e');
       print('Stack trace: $stackTrace');
-      return false;
+      rethrow;
     }
   }
 

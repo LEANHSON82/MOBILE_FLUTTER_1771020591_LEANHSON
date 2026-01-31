@@ -42,6 +42,7 @@ dependencies:
   signalr_netcore: ^1.4.4
   fl_chart: ^0.70.0
   image_picker: ^1.1.2
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:

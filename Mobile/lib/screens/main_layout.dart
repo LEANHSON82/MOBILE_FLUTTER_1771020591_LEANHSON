@@ -4,6 +4,7 @@ import '../providers/auth_provider.dart';
 import 'dashboard_screen.dart';
 import 'booking_screen.dart';
 import 'tournament_screen.dart';
+import 'duel_screen.dart';
 import 'wallet_screen.dart';
 import 'profile_screen.dart';
 import 'notifications_screen.dart';
@@ -22,6 +23,7 @@ class _MainLayoutState extends State<MainLayout> {
     const DashboardScreen(),
     const BookingScreen(),
     const TournamentScreen(),
+    const DuelScreen(),
     const WalletScreen(),
     const ProfileScreen(),
   ];
@@ -30,6 +32,7 @@ class _MainLayoutState extends State<MainLayout> {
     'Trang chủ',
     'Đặt sân',
     'Giải đấu',
+    'Thách đấu',
     'Ví tiền',
     'Cá nhân',
   ];
@@ -105,6 +108,11 @@ class _MainLayoutState extends State<MainLayout> {
             icon: Icon(Icons.emoji_events_outlined),
             selectedIcon: Icon(Icons.emoji_events),
             label: 'Giải đấu',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.sports_mma_outlined),
+            selectedIcon: Icon(Icons.sports_mma),
+            label: 'Thách đấu',
           ),
           NavigationDestination(
             icon: Icon(Icons.account_balance_wallet_outlined),
