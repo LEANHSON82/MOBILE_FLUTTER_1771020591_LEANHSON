@@ -36,37 +36,55 @@ namespace PCM_Backend.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.Username);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            Console.WriteLine($"[AUTH] Login attempt for user: {model.Username}");
+            try
             {
-                var authClaims = new List<Claim>
+                var user = await _userManager.FindByNameAsync(model.Username);
+                if (user == null)
                 {
-                    new Claim(ClaimTypes.Name, user.UserName!),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id)
-                };
-
-                // Add Roles
-                var userRoles = await _userManager.GetRolesAsync(user);
-                foreach (var role in userRoles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, role));
+                    Console.WriteLine($"[AUTH] User not found: {model.Username}");
+                    return Unauthorized(new { message = "Tài khoản không tồn tại" });
                 }
 
-                var token = GetToken(authClaims);
-
-                // Get Member info
-                var member = await Task.Run(() => _context.Members.FirstOrDefault(m => m.UserId == user.Id));
-
-                return Ok(new
+                var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                if (result.Succeeded)
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo,
-                    user = member,
-                    roles = userRoles // Return roles
-                });
+                    var authClaims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.UserName!),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id)
+                    };
+
+                    var userRoles = await _userManager.GetRolesAsync(user);
+                    foreach (var role in userRoles)
+                    {
+                        authClaims.Add(new Claim(ClaimTypes.Role, role));
+                    }
+
+                    var token = GetToken(authClaims);
+
+                    // Get Member info - Use Async
+                    var member = await _context.Members.FirstOrDefaultAsync(m => m.UserId == user.Id);
+
+                    Console.WriteLine($"[AUTH] Login successful for: {model.Username}");
+                    return Ok(new
+                    {
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        expiration = token.ValidTo,
+                        user = member,
+                        roles = userRoles
+                    });
+                }
+
+                Console.WriteLine($"[AUTH] Invalid password for user: {model.Username}");
+                return Unauthorized(new { message = "Mật khẩu không chính xác" });
             }
-            return Unauthorized();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Login exception: {ex.Message}");
+                return StatusCode(500, new { message = "Lỗi hệ thống", detail = ex.Message });
+            }
         }
 
         [HttpGet("force-create-admin")]
