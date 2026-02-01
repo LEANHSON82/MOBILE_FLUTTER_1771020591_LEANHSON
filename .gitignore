@@ -38,6 +38,12 @@ ios/Podfile.lock
 ios/Pods/
 ios/.symlinks/
 
+# Node.js
+node_modules/
+*.js
+package.json
+package-lock.json
+
 # .NET / ASP.NET Core
 bin/
 obj/

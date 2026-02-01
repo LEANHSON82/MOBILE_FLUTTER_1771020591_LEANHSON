@@ -78,6 +78,8 @@ app.MapHub<PcmHub>("/pcmHub");
 // Data Seeding
 using (var scope = app.Services.CreateScope())
 {
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await context.Database.MigrateAsync();
     await PCM_Backend.Services.DataSeeder.SeedData(scope.ServiceProvider);
 }
 
